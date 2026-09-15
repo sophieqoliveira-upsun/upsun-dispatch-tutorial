@@ -152,7 +152,6 @@ final class ArticleRepository
             content: $withContent ? $this->converter()->convert($body)->getContent() : null,
         );
     }
-    private const WORDS_PER_MINUTE = 200;
      /**
      * Estimated reading time in whole minutes, rounding any partial minute
      * up to a full minute (minimum 1).
@@ -162,8 +161,8 @@ final class ArticleRepository
         $words = str_word_count(strip_tags($markdown));
 
         // Round up so a partial minute still counts as a full minute.
-        return max(1, intdiv($words, self::WORDS_PER_MINUTE) + 1);
-    }
+	return max(1, intdiv($words + self::WORDS_PER_MINUTE - 1, self::WORDS_PER_MINUTE));
+
 
     private function converter(): MarkdownConverter
     {
